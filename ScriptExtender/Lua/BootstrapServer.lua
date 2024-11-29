@@ -1,5 +1,10 @@
+local exampleTable = {
+    {["Handle"] = "h7ffea567g440cg4b02g91beg56e3f41fe2bd", ["Version"] = 0, ["Text"] = "<i>Sherlock Holmes this thing.</i>"}
+}
+
 
 ---Scrape and print all dialogue when dialogue is started
+---@return table
 local function ScrapeDialogue()
 
     -- grab copy of the dialogue manager
@@ -28,15 +33,14 @@ local function ScrapeDialogue()
                 -- if the node contains TaggedTexts then get the handle UUID, version, and text
                 if internal == "TaggedTexts" then
                     local handleUUID = node_data[1].Lines[1].TagText.Handle
-                    local handle = handleUUID.Handle
-                    local textData = Ext.Loca.GetTranslatedString(handle)
+                    local textData = Ext.Loca.GetTranslatedString(handleUUID.Handle)
 
                     -- variable to avoid adding duplicates to our list
                     local found = false
 
                     -- iterate through list to check if we already have it
                     for textInt, cachedValue in pairs(cachedText) do
-                        if handleUUID == cachedValue["HandleUUID"] and textData == cachedValue["Text"] and handle == cachedValue["Handle"] then
+                        if handleUUID == cachedValue["HandleUUID"] and textData == cachedValue["Text"] then
                             found = true
                         end
                     end
@@ -45,7 +49,6 @@ local function ScrapeDialogue()
                     if found == false then
                         table.insert(cachedText,{
                             HandleUUID = handleUUID,
-                            Handle = handle,
                             Text = textData
                         })
                     end
@@ -56,21 +59,9 @@ local function ScrapeDialogue()
 
     -- Uncomment this to have the scraped dialogue info printed to console
     -- This is useful for finding handles so you dont change all the dialogue
-    -- _D(cachedText)
+    _D(cachedText)
 
-    -- This is where you actually change the text. Use the information in the cachedText list to do this.
-    --WARNING!!! If you take too long to change the text it will NOT appear in game. If you do another nested for loop, even if it is only one element, it will not work. 
-    for key, value in pairs(cachedText) do
-
-        -- variable for the actual text
-        local updatedName = ("Test")
-
-        -- Update the text (Ideally you would have some kind of check to determine if the character in dialogue needs the text changes)
-        -- Uncomment it to have the handles be updated
-        -- Ext.Loca.UpdateTranslatedString(value["Handle"], updatedName)
-        -- Debug function to print to ensure the handle was changed correctly
-        -- _P(Ext.Loca.GetTranslatedString(value["Handle"]))
-    end
+    return cachedText
 end
 
 ---Notify client a dialogue has occured
@@ -80,8 +71,23 @@ local function ChangeClientDialogue(character, text)
     Ext.ServerNet.PostMessageToClient(character, "Dialogue_Client_Update", text)
 end
 
--- Every dialogue will call above function, or notify the client about it. 
+-- Every dialogue will call above function, or notify the client about it. (CLIENT CURRENTLY IS NOT WORKING!)
 Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instanceID)
-    -- ScrapeDialogue()
-    ChangeClientDialogue(Osi.GetHostCharacter(), "")
+    --ScrapeDialogue()
 end)
+
+---Function will change text based on being fed a table.
+---@param data table
+local function ChangeLoca(data)
+    for key, value in pairs(data) do
+        Ext.Loca.UpdateTranslatedString(value["Handle"], value["Text"])
+    end
+    
+end
+
+---Function called when game is loaded
+local function OnSessionLoaded()
+    ChangeLoca(exampleTable)
+end
+
+Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
