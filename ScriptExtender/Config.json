@@ -1,0 +1,5 @@
+{
+    "RequiredVersion": 1,
+    "ModTable": "Dialogue_Editing_c2d7581a-866e-b931-d772-edca7d212ec2",
+    "FeatureFlags": ["Lua"]
+}
