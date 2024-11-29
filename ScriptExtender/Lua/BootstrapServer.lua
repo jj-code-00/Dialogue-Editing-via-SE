@@ -54,7 +54,7 @@ local function ScrapeDialogue()
 
     -- Uncomment this to have the scraped dialogue info printed to console
     -- This is useful for finding handles so you dont change all the dialogue
-    _D(cachedText)
+    -- _D(cachedText)
 
     -- This is where you actually change the text. Use the information in the cachedText list to do this.
     --WARNING!!! If you take too long to change the text it will NOT appear in game. If you do another nested for loop, even if it is only one element, it will not work. 
@@ -65,14 +65,21 @@ local function ScrapeDialogue()
 
         -- Update the text (Ideally you would have some kind of check to determine if the character in dialogue needs the text changes)
         -- Uncomment it to have the handles be updated
-        Ext.Loca.UpdateTranslatedString(value["Handle"], updatedName)
-
+        -- Ext.Loca.UpdateTranslatedString(value["Handle"], updatedName)
         -- Debug function to print to ensure the handle was changed correctly
         -- _P(Ext.Loca.GetTranslatedString(value["Handle"]))
     end
 end
 
--- Every dialogue will call above function
+---Notify client a dialogue has occured
+---@param character string character UUID to send the notfication
+---@param text string empty string since it isn't needed in this case
+local function ChangeClientDialogue(character, text)
+    Ext.ServerNet.PostMessageToClient(character, "Dialogue_Client_Update", text)
+end
+
+-- Every dialogue will call above function, or notify the client about it. 
 Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instanceID)
-    ScrapeDialogue()
+    -- ScrapeDialogue()
+    ChangeClientDialogue(Osi.GetHostCharacter(), "")
 end)
