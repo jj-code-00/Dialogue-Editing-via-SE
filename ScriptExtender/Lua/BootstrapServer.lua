@@ -8,6 +8,8 @@ local function ScrapeDialogue()
     -- get the path to all the dialogue nodes
     local nodes = dialogueManager.CachedDialogs[1].Nodes
 
+    -- _D(nodes)
+
     -- Table of all handle's and loca text
     local cachedText = {}
 
@@ -61,7 +63,7 @@ local function ScrapeDialogue()
     for key, value in pairs(cachedText) do
 
         -- variable for the actual text
-        local updatedName = ("N")
+        local updatedName = ("Test")
 
         -- Update the text (Ideally you would have some kind of check to determine if the character in dialogue needs the text changes)
         -- Uncomment it to have the handles be updated
