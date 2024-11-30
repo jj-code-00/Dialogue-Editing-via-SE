@@ -62,19 +62,38 @@ end)
 ---@param instanceEnded any
 Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, instanceID, actor, instanceEnded)
 
+    -- iterate through list of changed text
     for key, value in pairs(originals) do
+
+        -- grab entry
         local data = value[1]
 
+        -- Get Dialog 
         local dialogID = data["Dialog"]
 
+        -- See if the currently left dialog is the same
         if dialogID == dialog then
+
+            -- get instanceID
             local InstanceID = data["InstanceID"]
+
+            -- see if the instanceID is the same
             if InstanceID == instanceID then
+
+                -- get actor
                 local Actor = data["Actor"]
+
+                -- see if the Actor leaving is the same as the one that started it
                 if Actor == actor then
+
+                    -- update handle back to saved original value
                     Ext.Loca.UpdateTranslatedString(data["Handle"], data["Text"])
+
+                    -- clear said value from our table to save space
                     originals[key] = nil
-                    _P("Reverted Text back to: " .. Ext.Loca.GetTranslatedString(data["Handle"]))
+
+                    -- Uncomment for debugging
+                    -- _P("Reverted Text back to: " .. Ext.Loca.GetTranslatedString(data["Handle"]))
                 end
             end
         end
