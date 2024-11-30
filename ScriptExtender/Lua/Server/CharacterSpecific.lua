@@ -9,7 +9,7 @@ local characterSpecificChanges = {
 local originals = {
 }
 
-local enabled = true
+local enabled = false
 
 ---TODO
 ---Listen for dialogue beginning to grab any changes for the speaker or responder

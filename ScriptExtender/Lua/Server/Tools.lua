@@ -1,4 +1,4 @@
----TODO scrape for skill checks as well
+---TODO: scrape for skill checks as well
 ---Scrape and print all dialogue when dialogue is started
 ---@return table
 local function ScrapeDialogue()
@@ -59,7 +59,7 @@ local function ScrapeDialogue()
 
     -- Uncomment this to have the scraped dialogue info printed to console
     -- This is useful for finding handles so you dont change all the dialogue
-    -- _D(cachedText)
+    _D(cachedText)
 
     return cachedText
 end
