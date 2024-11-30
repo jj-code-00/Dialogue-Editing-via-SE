@@ -6,6 +6,12 @@ local characterSpecificChanges = {
             ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",}}
 }
 
+local originals = {
+}
+
+local enabled = true
+
+---TODO
 ---Listen for dialogue beginning to grab any changes for the speaker or responder
 ---This will only change the text IF a certain character is the one to initiate the conversation. Use it as an example.
 ---@param dialog any
@@ -14,23 +20,62 @@ local characterSpecificChanges = {
 ---@param speakerIndex any
 Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, instanceID, actor, speakerIndex)
 
-    -- Print actor for testing
-    _P("Actor: " .. actor)
+    if enabled == true then
+        -- Print actor for testing
+        _P("Actor: " .. actor)
 
-    -- grab this particular dialog's entry in table
-    local dialogue = characterSpecificChanges[dialog]
+        -- grab this particular dialog's entry in table
+        local dialogue = characterSpecificChanges[dialog]
 
-    -- make sure it isnt nil
-    if dialogue ~= nil then
+        -- make sure it isnt nil
+        if dialogue ~= nil then
 
-        -- check if current actor is in table, and is either the one talking, or responding. (Probably only need to check for 1 not 0)
-        -- Character is just an example. Something like checking for tags or passives would be more appropriate
-        -- keep in mind the actor is both the roottemplate name + the UUID so you will need to separate them to use in most Osi functions
-        if dialogue[actor] ~= nil and (speakerIndex == 1 or speakerIndex == 0) then
+            -- check if current actor is in table, and is either the one talking, or responding. (Probably only need to check for 1 not 0)
+            -- Character is just an example. Something like checking for tags or passives would be more appropriate
+            -- keep in mind the actor is both the roottemplate name + the UUID so you will need to separate them to use in most Osi functions
+            if dialogue[actor] ~= nil and (speakerIndex == 1 or speakerIndex == 0) then
 
-            -- iterate table of handles and text resplacements
-            for key, value in pairs(dialogue[actor]) do
-                Ext.Loca.UpdateTranslatedString(key, value)
+                -- iterate table of handles and text resplacements
+                for key, value in pairs(dialogue[actor]) do
+
+                    -- Get the data of the text before we change it
+                    local originalData = {
+                        {["Dialog"] = dialog, ["InstanceID"] = instanceID, ["Actor"] = actor, ["Handle"] = key, ["Text"] = Ext.Loca.GetTranslatedString(key)}
+                    }
+                    -- insert original text so we can revert the changes
+                    table.insert(originals,originalData)
+
+                    -- change text to our changed version
+                    Ext.Loca.UpdateTranslatedString(key, value)
+                end
+            end
+        end
+    end
+
+end)
+
+---TODO
+---Reset dialogue after the character leaves. Making it so if another person initiates said dialogue it is back to normal. 
+---@param dialog any
+---@param instanceID any
+---@param actor any
+---@param instanceEnded any
+Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, instanceID, actor, instanceEnded)
+
+    for key, value in pairs(originals) do
+        local data = value[1]
+
+        local dialogID = data["Dialog"]
+
+        if dialogID == dialog then
+            local InstanceID = data["InstanceID"]
+            if InstanceID == instanceID then
+                local Actor = data["Actor"]
+                if Actor == actor then
+                    Ext.Loca.UpdateTranslatedString(data["Handle"], data["Text"])
+                    originals[key] = nil
+                    _P("Reverted Text back to: " .. Ext.Loca.GetTranslatedString(data["Handle"]))
+                end
             end
         end
     end

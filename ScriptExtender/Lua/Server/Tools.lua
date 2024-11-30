@@ -1,3 +1,4 @@
+---TODO scrape for skill checks as well
 ---Scrape and print all dialogue when dialogue is started
 ---@return table
 local function ScrapeDialogue()
@@ -20,16 +21,21 @@ local function ScrapeDialogue()
         -- iterate through parent node data
         for UUID, data in pairs(parentNodes) do
 
+            -- uncomment to dump all dialogue nodes
+            -- _D(data)
+
             -- iterate through the iterated data searching for "TaggedTexts"
             for internal, node_data in pairs(data) do
 
+                -- variable to avoid adding duplicates to our list
+                local found = false
+                local handleUUID
+                local textData
+
                 -- if the node contains TaggedTexts then get the handle UUID, version, and text
                 if internal == "TaggedTexts" then
-                    local handleUUID = node_data[1].Lines[1].TagText.Handle
-                    local textData = Ext.Loca.GetTranslatedString(handleUUID.Handle)
-
-                    -- variable to avoid adding duplicates to our list
-                    local found = false
+                    handleUUID = node_data[1].Lines[1].TagText.Handle
+                    textData = Ext.Loca.GetTranslatedString(handleUUID.Handle)
 
                     -- iterate through list to check if we already have it
                     for textInt, cachedValue in pairs(cachedText) do
@@ -38,13 +44,14 @@ local function ScrapeDialogue()
                         end
                     end
 
-                    -- if we dont then add it to our list
-                    if found == false then
-                        table.insert(cachedText,{
-                            HandleUUID = handleUUID,
-                            Text = textData
-                        })
-                    end
+                end
+
+                -- if we dont then add it to our list
+                if found == false then
+                    table.insert(cachedText,{
+                        HandleUUID = handleUUID,
+                        Text = textData
+                    })
                 end
             end
         end
@@ -52,7 +59,7 @@ local function ScrapeDialogue()
 
     -- Uncomment this to have the scraped dialogue info printed to console
     -- This is useful for finding handles so you dont change all the dialogue
-    _D(cachedText)
+    -- _D(cachedText)
 
     return cachedText
 end
