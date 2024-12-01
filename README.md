@@ -24,7 +24,7 @@ This is important so this mod loads before yours!
 # API Information
 Currently there are very few options but I will be expanding them. 
 
-Follow this data structure for your changes.
+Follow this data structure for your global changes.
 ```
 local exampleGlobalTable = {
 
@@ -47,7 +47,7 @@ end
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
 ```
 
-This data structure is dialogueID = {Character = {Handle = text}}
+This data structure is {Character = {Handle = text}}
 ```
 local exampleCharacterSpecificChanges = {
         ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
@@ -62,3 +62,6 @@ In the above example the dialogueID is `TUT_Start_Brinepool_279b424b-b9dd-f053-3
 #### `Mods.Dialogue_Editing.AddCharacterSpecificChange(dialogueID,exampleCharacterSpecificChanges)`
 
 This should also be called at session load. 
+
+# Tools
+The mod includes a dialogue scraper and other information that will be dumped to the console if enabled in the MCM. 
