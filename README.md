@@ -65,3 +65,13 @@ This should also be called at session load.
 
 # Tools
 The mod includes a dialogue scraper and other information that will be dumped to the console if enabled in the MCM. 
+These are useful for getting Handles, actor information, Text data, and eventually things like skills rolls, etc. 
+
+# Resources
+[Datamind dialogue](https://www.tumblr.com/roksik-dnd/727481314781102080/bg3-datamined-dialogue-google-drive): This includes most all handles and text you would need. 
+Moxifier's [Github](https://github.com/Moxifer/bg3-dialog-timeline-edits/tree/main): They have done more extensive dialogue editing and there repo can be a good example for more advanced usages beyond this mod. 
+
+# Credits
+[Moxifier](https://next.nexusmods.com/profile/moxifer3/mods?gameId=3474) for allowing me to link their resources.
+wtfbengt on discord for giving me an example on how the API for SE works. 
+[DIQ Discord](https://discord.gg/baldursgoonsacks) for all the help the modders there have given me. 
