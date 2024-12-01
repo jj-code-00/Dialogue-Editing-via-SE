@@ -1,12 +1,12 @@
 -- example table for dialog specific changes. 
-local characterSpecificChanges = {
+CharacterSpecificChanges = {
     ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
         ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
             ["h7ffea567g440cg4b02g91beg56e3f41fe2bd"] = "<i>Sherlock Holmes moment.</i>",
             ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",}}
 }
 
-local originals = {
+local originalsCharSpec = {
 }
 
 local enabled = false
@@ -25,7 +25,7 @@ Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, in
         _P("Actor: " .. actor)
 
         -- grab this particular dialog's entry in table
-        local dialogue = characterSpecificChanges[dialog]
+        local dialogue = CharacterSpecificChanges[dialog]
 
         -- make sure it isnt nil
         if dialogue ~= nil then
@@ -43,7 +43,7 @@ Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, in
                         {["Dialog"] = dialog, ["InstanceID"] = instanceID, ["Actor"] = actor, ["Handle"] = key, ["Text"] = Ext.Loca.GetTranslatedString(key)}
                     }
                     -- insert original text so we can revert the changes
-                    table.insert(originals,originalData)
+                    table.insert(originalsCharSpec,originalData)
 
                     -- change text to our changed version
                     Ext.Loca.UpdateTranslatedString(key, value)
@@ -63,7 +63,7 @@ end)
 Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, instanceID, actor, instanceEnded)
 
     -- iterate through list of changed text
-    for key, value in pairs(originals) do
+    for key, value in pairs(originalsCharSpec) do
 
         -- grab entry
         local data = value[1]
@@ -90,7 +90,7 @@ Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, inst
                     Ext.Loca.UpdateTranslatedString(data["Handle"], data["Text"])
 
                     -- clear said value from our table to save space
-                    originals[key] = nil
+                    originalsCharSpec[key] = nil
 
                     -- Uncomment for debugging
                     -- _P("Reverted Text back to: " .. Ext.Loca.GetTranslatedString(data["Handle"]))

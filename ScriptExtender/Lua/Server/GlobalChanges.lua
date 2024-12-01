@@ -6,17 +6,17 @@ local exampleGlobalTable = {
 
 ---Function will change text globally based on being fed a table.
 ---@param data table
-local function ChangeGlobalLoca(data)
+function ChangeGlobalLoca(data)
     for key, value in pairs(data) do
         Ext.Loca.UpdateTranslatedString(value["Handle"], value["Text"])
     end
 end
 
----Function called when game is loaded
-local function OnSessionLoaded()
+-- ---Function called when game is loaded
+-- local function OnSessionLoaded()
 
-    -- uncomment to globally change text 
-    -- ChangeGlobalLoca(exampleGlobalTable)
-end
+--     -- uncomment to globally change text 
+--     -- ChangeGlobalLoca(exampleGlobalTable)
+-- end
 
-Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
+-- Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
