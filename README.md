@@ -81,7 +81,8 @@ wtfbengt on discord for giving me an example on how the API for SE works.
 [DIQ Discord](https://discord.gg/baldursgoonsacks) for all the help the modders there have given me. 
 
 # Full Example BootstrapServer.lua
-```local exampleGlobalTable = {
+```
+local exampleGlobalTable = {
     {["Handle"] = "h7ffea567g440cg4b02g91beg56e3f41fe2bd", ["Version"] = 0, ["Text"] = "<i>Sherlock Holmes this thing.</i>"}, 
 }
 
