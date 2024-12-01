@@ -1,3 +1,5 @@
+EnableScraping = false
+
 ---TODO: scrape for skill checks as well
 ---Scrape and print all dialogue when dialogue is started
 ---@return table
@@ -47,7 +49,7 @@ local function ScrapeDialogue()
                 end
 
                 -- if we dont then add it to our list
-                if found == false then
+                if found == false and handleUUID ~= nil and textData ~= nil then
                     table.insert(cachedText,{
                         HandleUUID = handleUUID,
                         Text = textData
@@ -68,6 +70,9 @@ end
 ---@param dialog any
 ---@param instanceID any
 Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instanceID)
-    _P("Dialog is: " .. dialog)
-    ScrapeDialogue()
+    if EnableScraping == true then
+        _P("Dialog is: " .. dialog)
+        ScrapeDialogue()
+    end
+    
 end)

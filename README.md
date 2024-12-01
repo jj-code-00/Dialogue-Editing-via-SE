@@ -65,6 +65,7 @@ This should also be called at session load.
 
 # Tools
 The mod includes a dialogue scraper and other information that will be dumped to the console if enabled in the MCM. 
+
 These are useful for getting Handles, actor information, Text data, and eventually things like skills rolls, etc. 
 
 # Resources
