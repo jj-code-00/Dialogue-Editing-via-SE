@@ -3,13 +3,19 @@ Mods.Dialogue_Editing = Mods.Dialogue_Editing or {}
 
 ---Add to character specific dialogue changes
 ---@param payload table
-local function AddCharacterSpecificChange(dialogueID,payload)
+local function AddCharacterSpecificChange(payload)
 
-    if CharacterSpecificChanges[dialogueID] == nil then
-        CharacterSpecificChanges[dialogueID] = {}
+    for key, value in pairs(payload) do
+
+        -- Create dialogue entry if it does not exist
+        if CharacterSpecificChanges[key] == nil then
+            CharacterSpecificChanges[key] = {}
+        end
+
+        table.insert(CharacterSpecificChanges[key],value)
+
     end
-
-    table.insert(CharacterSpecificChanges[dialogueID],payload)
+    
     _D(CharacterSpecificChanges)
 end
 

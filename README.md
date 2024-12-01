@@ -79,3 +79,27 @@ Moxifier's [Github](https://github.com/Moxifer/bg3-dialog-timeline-edits/tree/ma
 wtfbengt on discord for giving me an example on how the API for SE works. 
 
 [DIQ Discord](https://discord.gg/baldursgoonsacks) for all the help the modders there have given me. 
+
+# Full Example BootstrapServer.lua
+```local exampleGlobalTable = {
+    {["Handle"] = "h7ffea567g440cg4b02g91beg56e3f41fe2bd", ["Version"] = 0, ["Text"] = "<i>Sherlock Holmes this thing.</i>"}, 
+}
+
+local exampleCharacterSpecificChanges = {
+    ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
+        ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
+            ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",
+            }
+        }
+    }
+
+---Run both functions on session load
+local function OnSessionLoaded()
+    Mods.Dialogue_Editing.AddGlobalChange(exampleGlobalTable)
+
+    Mods.Dialogue_Editing.AddCharacterSpecificChange(exampleCharacterSpecificChanges)
+	
+end
+
+Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
+```
