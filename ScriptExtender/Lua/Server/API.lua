@@ -3,8 +3,8 @@ Mods.Dialogue_Editing = Mods.Dialogue_Editing or {}
 
 ---Add to character specific dialogue changes
 ---@param payload table
-local function AddCharacterSpecificChange(payload)
-    table.insert(CharacterSpecificChanges,payload)
+local function AddCharacterSpecificChange(dialogueID,payload)
+    table.insert(CharacterSpecificChanges[dialogueID],payload)
 end
 
 ---Add to global dialogue changes
