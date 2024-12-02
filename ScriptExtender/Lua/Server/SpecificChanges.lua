@@ -100,7 +100,7 @@ Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, inst
     end
 end)
 
--- Osi.HasPassive(entity, passiveID) Osi.HasActiveStatus(target, status)
+-- Osi.HasActiveStatus(target, status)
 
 TagSpecificChanges = {}
 
@@ -152,3 +152,54 @@ Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, in
         end
     end
 end)
+
+-- PassiveSpecificChanges = {}
+
+-- ---TODO
+-- ---Change dialogue based on passives
+-- ---This will only change the text IF a certain character is the one to initiate the conversation. Use it as an example.
+-- ---@param dialog any
+-- ---@param instanceID any
+-- ---@param actor any
+-- ---@param speakerIndex any
+-- Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, instanceID, actor, speakerIndex)
+
+--     -- grab this particular dialog's entry in table
+--     local dialogue = PassiveSpecificChanges[dialog]
+
+--     if dialogue ~= nil then
+--         dialogue = PassiveSpecificChanges[dialog][1]
+--     end
+
+--     -- make sure it isnt nil
+--     if dialogue ~= nil then
+
+--         -- check if current actor is either the one talking, or responding. (Probably only need to check for 1 not 0)
+--         if speakerIndex == 1 or speakerIndex == 0 then
+
+--             -- iterate tags with changes in this dialogue
+--             for key, value in pairs(dialogue) do
+
+--                 -- get the character and see if they have the tag
+--                 local character = string.sub(actor,-36)
+
+--                 -- if they do iterate through the tags changes
+--                 if Osi.HasPassive(character, key) == 1 then
+--                     for k, v in pairs(dialogue[key]) do
+
+--                         -- Get the data of the text before we change it
+--                         local originalData = {
+--                             {["Dialog"] = dialog, ["InstanceID"] = instanceID, ["Actor"] = actor, ["Handle"] = key, ["Text"] = Ext.Loca.GetTranslatedString(key)}
+--                         }
+
+--                         -- insert original text so we can revert the changes
+--                         table.insert(originals,originalData)
+
+--                         -- change text to our changed version
+--                         Ext.Loca.UpdateTranslatedString(k, v)
+--                     end
+--                 end             
+--             end
+--         end
+--     end
+-- end)
