@@ -1,0 +1,38 @@
+{
+    "SchemaVersion": 1,
+    "Tabs": [
+        {
+            "TabName": "General",
+            "TabId": "general",
+            "Sections": [
+                {
+                    "SectionId": "dialogue_Editing_settings",
+                    "SectionName": "Dialogue Editing Debug Mode",
+                    "Settings": [
+                        {
+                            "Id": "dialogue_Editing_Debug",
+                            "Name": "Debug Mode",
+                            "Type": "checkbox",
+                            "Default": false,
+                            "Description": "Enable Dumping dialogue Information to console.",
+                            "Handles": {
+                                "DescriptionHandle": "h64269889c61244f68d9050a6a4807ad831a6",
+                                "NameHandle": "h1aa981d9795b4293a10c99688f923d2fa1gc"
+                            },
+                            "Options": {
+                                "Min": 1,
+                                "Max": 100
+                            }
+                        }
+                    ],
+                    "Handles": {
+                        "NameHandle": "h92a1a407b9c44998b63049f4cc5b66d5607g"
+                    }
+                }
+            ],
+            "Handles": {
+                "NameHandle": "h7d3daa5d72734546afa3031181a0a28a483g"
+            }
+        }
+    ]
+}

@@ -15,8 +15,6 @@ local function AddCharacterSpecificChange(payload)
         table.insert(CharacterSpecificChanges[key],value)
 
     end
-    
-    _D(CharacterSpecificChanges)
 end
 
 ---Add to global dialogue changes

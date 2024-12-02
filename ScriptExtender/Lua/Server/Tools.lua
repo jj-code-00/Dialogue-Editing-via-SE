@@ -1,4 +1,4 @@
-EnableScraping = false
+EnableScraping = MCM.Get("dialogue_Editing_Debug")
 
 ---TODO: scrape for skill checks as well
 ---Scrape and print all dialogue when dialogue is started

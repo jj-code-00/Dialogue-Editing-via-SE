@@ -1,4 +1,4 @@
-EnableCharacterSpecDebug = true
+EnableCharacterSpecDebug = MCM.Get("dialogue_Editing_Debug")
 
 -- example table for dialog specific changes. 
 -- ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
