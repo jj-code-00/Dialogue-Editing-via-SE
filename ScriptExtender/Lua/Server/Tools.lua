@@ -66,6 +66,39 @@ local function ScrapeDialogue()
     return cachedText
 end
 
+local depth = 0
+local maxDepth = 5000
+local savedHandles = {}
+
+---Recursively attempt to get to all handles, with cycle detection
+---@param dialogueManager any
+---@param visited table A table to keep track of visited tables to prevent cycles
+local function DeepDialogueScrape(dialogueManager, visited)
+
+    -- If this table has already been visited, stop recursing
+    if visited[dialogueManager] then
+        return
+    end
+
+    -- Mark this table as visited (use table identity as key)
+    visited[dialogueManager] = true
+    
+    for key, value in pairs(dialogueManager) do
+
+        if key == "Handle" and type(value) == "string" and value ~= "ls::TranslatedStringRepository::s_HandleUnknown" then
+            if savedHandles[value] == nil then
+                savedHandles[value] = Ext.Loca.GetTranslatedString(value)
+            end
+        end
+        if type(value) == "userdata" then 
+            pcall( function() DeepDialogueScrape(value, visited) end)
+        end
+    end
+
+    
+    
+end
+
 --- Print current dialogue and scrape all handles and text. 
 ---@param dialog any
 ---@param instanceID any
@@ -75,7 +108,14 @@ Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instan
         _P("Dialog is: " .. dialog)
     end
     if EnableScraping == true then
-        ScrapeDialogue()
+
+        local dialogueManager = Ext.Utils.GetDialogManager()
+
+        local visted = {}
+
+        DeepDialogueScrape(dialogueManager, visted)
+        _D(savedHandles)
+        savedHandles = {}
     end
     
 end)
