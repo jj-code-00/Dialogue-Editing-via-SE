@@ -22,7 +22,7 @@ Add mod as a dependency either through the toolkit, or manually using [this guid
 This is important so this mod loads before yours!
 
 # API Information
-There are two functions to familiarize yourself with. Global changes and specific changes. Global changes are when you want a handle to be changes for everyone. Specific changes will adjust the dialogue if the initiator or speaker meets certain criteria, and removes said changes after dialogue incase another person initiates dialogue again.  
+There are two functions to familiarize yourself with. Global changes and specific changes. Global changes are when you want a handle to be changed for everyone. Specific changes will adjust the dialogue if the initiator or speaker meets certain criteria, and will remove said changes after dialogue, incase another person initiates dialogue again.  
 
 Follow this data structure for your global changes.
 ```
@@ -51,15 +51,15 @@ Follow this data structure for your specific changes
 
 Currently Supported options are:
 
-1. Specific Actors
+1. Actors
 2. Statuses
 3. StatusGroups
 4. Passives
 5. Tags
 
-They also are prioritized in the same order. So if you have specific changes for the same handle tags will lose to specific actor changes. 
+They also are prioritized in the same order. So if you have specific changes for the same handle tags will lose to actor changes. 
 ```
-local blueprint = {
+local exampleSpecific = {
     ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
         ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = {
             ["Tag"] = {
@@ -83,7 +83,7 @@ local blueprint = {
 }
 ```
 
-#### `Mods.Dialogue_Editing.AddSpecificChanges(blueprint)`
+#### `Mods.Dialogue_Editing.AddSpecificChanges(exampleSpecific)`
 
 This should also be called at session load. 
 
