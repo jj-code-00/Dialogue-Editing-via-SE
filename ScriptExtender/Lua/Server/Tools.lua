@@ -1,73 +1,5 @@
 EnableScraping = MCM.Get("dialogue_Editing_Scraper")
 
----TODO: scrape for skill checks as well
----Scrape and print all dialogue when dialogue is started
----@return table
-local function ScrapeDialogue()
-
-    -- grab copy of the dialogue manager
-    local dialogueManager = Ext.Utils.GetDialogManager()
-
-    -- get the path to all the dialogue nodes
-    local nodes = dialogueManager.CachedDialogs[1].Nodes
-
-    -- Table of all handle's and loca text
-    local cachedText = {}
-
-    -- iterate through all dialogue nodes
-    for key, value in pairs(nodes) do
-
-        -- get path to parent nodes (ie node containing the handle information)
-        local parentNodes = value.ParentDialog.Nodes
-
-        -- iterate through parent node data
-        for UUID, data in pairs(parentNodes) do
-
-            -- uncomment to dump all dialogue nodes
-            -- _D(data)
-
-            -- iterate through the iterated data searching for "TaggedTexts"
-            for internal, node_data in pairs(data) do
-
-                -- variable to avoid adding duplicates to our list
-                local found = false
-                local handleUUID
-                local textData
-
-                -- if the node contains TaggedTexts then get the handle UUID, version, and text
-                if internal == "TaggedTexts" then
-                    handleUUID = node_data[1].Lines[1].TagText.Handle
-                    textData = Ext.Loca.GetTranslatedString(handleUUID.Handle)
-
-                    -- iterate through list to check if we already have it
-                    for textInt, cachedValue in pairs(cachedText) do
-                        if handleUUID == cachedValue["HandleUUID"] and textData == cachedValue["Text"] then
-                            found = true
-                        end
-                    end
-
-                end
-
-                -- if we dont then add it to our list
-                if found == false and handleUUID ~= nil and textData ~= nil then
-                    table.insert(cachedText,{
-                        HandleUUID = handleUUID,
-                        Text = textData
-                    })
-                end
-            end
-        end
-    end
-
-    -- Uncomment this to have the scraped dialogue info printed to console
-    -- This is useful for finding handles so you dont change all the dialogue
-    _D(cachedText)
-
-    return cachedText
-end
-
-local depth = 0
-local maxDepth = 5000
 local savedHandles = {}
 
 ---Recursively attempt to get to all handles, with cycle detection
@@ -83,20 +15,35 @@ local function DeepDialogueScrape(dialogueManager, visited)
     -- Mark this table as visited (use table identity as key)
     visited[dialogueManager] = true
     
+    -- iterate through current object
     for key, value in pairs(dialogueManager) do
 
+        -- if key is handle and the value is a string check if we've saved it, and if not add it to saved handles table
         if key == "Handle" and type(value) == "string" and value ~= "ls::TranslatedStringRepository::s_HandleUnknown" then
             if savedHandles[value] == nil then
                 savedHandles[value] = Ext.Loca.GetTranslatedString(value)
             end
         end
+
+        -- if the type is userdata, IE generally a table, do a protected recursive call. Protected is needed so when the userdata is not a table type structure it doesn't error out
         if type(value) == "userdata" then 
             pcall( function() DeepDialogueScrape(value, visited) end)
         end
     end
+    
+end
 
+---Scrape and print all dialogue when dialogue is started
+local function ScrapeDialogue()
     
-    
+    -- scrape the dialogue manager for handles and save them to savedHandles
+    DeepDialogueScrape(Ext.Utils.GetDialogManager(), {})
+
+    -- dump handles and text for development
+    _D(savedHandles)
+
+    -- clear table to save space and ensure each call of this function has an empty table to work with
+    savedHandles = {}
 end
 
 --- Print current dialogue and scrape all handles and text. 
@@ -104,18 +51,14 @@ end
 ---@param instanceID any
 Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instanceID)
 
+    -- IF character spec debug is true print basic info
     if EnableCharacterSpecDebug == true then
         _P("Dialog is: " .. dialog)
     end
+
+    -- if scraper is true print all handles and text
     if EnableScraping == true then
-
-        local dialogueManager = Ext.Utils.GetDialogManager()
-
-        local visted = {}
-
-        DeepDialogueScrape(dialogueManager, visted)
-        _D(savedHandles)
-        savedHandles = {}
+        ScrapeDialogue()
     end
     
 end)
