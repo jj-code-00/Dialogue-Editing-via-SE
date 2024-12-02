@@ -47,19 +47,23 @@ end
 Ext.Events.SessionLoaded:Subscribe(OnSessionLoaded)
 ```
 
-This data structure is {Character = {Handle = text}}
+Follow this data structure for your per character changes.
 ```
 local exampleCharacterSpecificChanges = {
-        ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
-
-            ["h7ffea567g440cg4b02g91beg56e3f41fe2bd"] = "<i>Sherlock Holmes moment.</i>",
-
-            ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",}
-
+    ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
+        ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
+            ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",
+        }
+    },
+    [dialog] = {
+      [character] = {
+        [handle] = "text",
+      }
+    },
 }
 ```
-In the above example the dialogueID is `TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc`
-#### `Mods.Dialogue_Editing.AddCharacterSpecificChange(dialogueID,exampleCharacterSpecificChanges)`
+
+#### `Mods.Dialogue_Editing.AddCharacterSpecificChange(exampleCharacterSpecificChanges)`
 
 This should also be called at session load. 
 
@@ -71,7 +75,7 @@ These are useful for getting Handles, actor information, Text data, and eventual
 # Resources
 [Datamind dialogue](https://www.tumblr.com/roksik-dnd/727481314781102080/bg3-datamined-dialogue-google-drive): This includes most all handles and text you would need. 
 
-Moxifier's [Github](https://github.com/Moxifer/bg3-dialog-timeline-edits/tree/main): They have done more extensive dialogue editing and there repo can be a good example for more advanced usages beyond this mod. 
+Moxifier's [Github](https://github.com/Moxifer/bg3-dialog-timeline-edits/tree/main): They have done more extensive dialogue editing and their repo can be a good example for more advanced usages beyond this mod. 
 
 # Credits
 [Moxifier](https://next.nexusmods.com/profile/moxifer3/mods?gameId=3474) for allowing me to link their resources.
@@ -83,13 +87,13 @@ wtfbengt on discord for giving me an example on how the API for SE works.
 # Full Example BootstrapServer.lua
 ```
 local exampleGlobalTable = {
-    {["Handle"] = "h7ffea567g440cg4b02g91beg56e3f41fe2bd", ["Version"] = 0, ["Text"] = "<i>Sherlock Holmes this thing.</i>"}, 
+    {["Handle"] = "h7ffea567g440cg4b02g91beg56e3f41fe2bd", ["Version"] = 0, ["Text"] = "<i>Sherlock Holmes this thing.</i>"} 
 }
 
 local exampleCharacterSpecificChanges = {
     ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
         ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
-            ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",
+            ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>"
             }
         }
     }
