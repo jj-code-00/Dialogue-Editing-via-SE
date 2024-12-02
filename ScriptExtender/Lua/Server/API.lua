@@ -17,6 +17,18 @@ local function AddCharacterSpecificChange(payload)
     end
 end
 
+local function AddTagSpecificChanges (payload)
+    for key, value in pairs(payload) do
+
+        -- Create dialogue entry if it does not exist
+        if TagSpecificChanges[key] == nil then
+            TagSpecificChanges[key] = {}
+        end
+
+        table.insert(TagSpecificChanges[key],value)
+    end
+end
+
 ---Add to global dialogue changes
 ---@param payload table
 local function AddGlobalChange(payload)
@@ -26,3 +38,4 @@ end
 -- Add functions to mod functions
 Mods.Dialogue_Editing.AddGlobalChange = AddGlobalChange
 Mods.Dialogue_Editing.AddCharacterSpecificChange = AddCharacterSpecificChange
+Mods.Dialogue_Editing.AddTagSpecificChanges = AddTagSpecificChanges

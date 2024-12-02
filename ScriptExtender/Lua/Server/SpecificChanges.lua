@@ -1,15 +1,10 @@
 EnableCharacterSpecDebug = MCM.Get("dialogue_Editing_Debug")
 
--- example table for dialog specific changes. 
--- ["TUT_Start_Brinepool_279b424b-b9dd-f053-33ca-7d42969280fc"] = {
---     ["Elves_Female_High_Player_6e7d72d8-f54a-3351-d0b0-38cd041f2be4"] = {
---         ["h7ffea567g440cg4b02g91beg56e3f41fe2bd"] = "<i>Sherlock Holmes moment.</i>",
---         ["h0e1441fdg9d1eg47cag8f55g5e313e5b0f11"] = "<i>Dunk your hand in the pool.</i>",}}
-CharacterSpecificChanges = {
-}
+--Copies of handle and text before changes
+local originals = {}
 
-local originalsCharSpec = {
-}
+--table that character changes are added to
+CharacterSpecificChanges = {}
 
 ---TODO
 ---Listen for dialogue beginning to grab any changes for the speaker or responder
@@ -32,8 +27,6 @@ Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, in
         dialogue = CharacterSpecificChanges[dialog][1]
     end
 
-    -- _D(dialog)
-
     -- make sure it isnt nil
     if dialogue ~= nil then
 
@@ -50,7 +43,7 @@ Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, in
                     {["Dialog"] = dialog, ["InstanceID"] = instanceID, ["Actor"] = actor, ["Handle"] = key, ["Text"] = Ext.Loca.GetTranslatedString(key)}
                 }
                 -- insert original text so we can revert the changes
-                table.insert(originalsCharSpec,originalData)
+                table.insert(originals,originalData)
 
                 -- change text to our changed version
                 Ext.Loca.UpdateTranslatedString(key, value)
@@ -61,7 +54,7 @@ Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, in
 end)
 
 ---TODO
----Reset character specific dialogue after the character leaves. Making it so if another person initiates said dialogue it is back to normal. 
+---Reset specific dialogue after the character leaves. Making it so if another person initiates said dialogue it is back to normal. 
 ---@param dialog any
 ---@param instanceID any
 ---@param actor any
@@ -69,7 +62,7 @@ end)
 Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, instanceID, actor, instanceEnded)
 
     -- iterate through list of changed text
-    for key, value in pairs(originalsCharSpec) do
+    for key, value in pairs(originals) do
 
         -- grab entry
         local data = value[1]
@@ -96,12 +89,65 @@ Ext.Osiris.RegisterListener("DialogActorLeft", 4, "after", function(dialog, inst
                     Ext.Loca.UpdateTranslatedString(data["Handle"], data["Text"])
 
                     -- clear said value from our table to save space
-                    originalsCharSpec[key] = nil
+                    originals[key] = nil
 
                     if EnableCharacterSpecDebug == true then
                         _P("Reverted Text back to: " .. Ext.Loca.GetTranslatedString(data["Handle"]))
                     end
                 end
+            end
+        end
+    end
+end)
+
+-- Osi.HasPassive(entity, passiveID) Osi.HasActiveStatus(target, status)
+
+TagSpecificChanges = {}
+
+---TODO
+---Change dialogue based on tags
+---This will only change the text IF a certain character is the one to initiate the conversation. Use it as an example.
+---@param dialog any
+---@param instanceID any
+---@param actor any
+---@param speakerIndex any
+Ext.Osiris.RegisterListener("DialogActorJoined", 4, "after", function(dialog, instanceID, actor, speakerIndex)
+
+    -- grab this particular dialog's entry in table
+    local dialogue = TagSpecificChanges[dialog]
+
+    if dialogue ~= nil then
+        dialogue = TagSpecificChanges[dialog][1]
+    end
+
+    -- make sure it isnt nil
+    if dialogue ~= nil then
+
+        -- check if current actor is either the one talking, or responding. (Probably only need to check for 1 not 0)
+        if speakerIndex == 1 or speakerIndex == 0 then
+
+            -- iterate tags with changes in this dialogue
+            for key, value in pairs(dialogue) do
+
+                -- get the character and see if they have the tag
+                local character = string.sub(actor,-36)
+
+                -- if they do iterate through the tags changes
+                if Osi.IsTagged(character, key) == 1 then
+                    for k, v in pairs(dialogue[key]) do
+
+                        -- Get the data of the text before we change it
+                        local originalData = {
+                            {["Dialog"] = dialog, ["InstanceID"] = instanceID, ["Actor"] = actor, ["Handle"] = key, ["Text"] = Ext.Loca.GetTranslatedString(key)}
+                        }
+
+                        -- insert original text so we can revert the changes
+                        table.insert(originals,originalData)
+
+                        -- change text to our changed version
+                        Ext.Loca.UpdateTranslatedString(k, v)
+                    end
+                end             
             end
         end
     end
