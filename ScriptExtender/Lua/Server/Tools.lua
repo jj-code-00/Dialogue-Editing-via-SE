@@ -1,4 +1,4 @@
-EnableScraping = MCM.Get("dialogue_Editing_Debug")
+EnableScraping = MCM.Get("dialogue_Editing_Scraper")
 
 ---TODO: scrape for skill checks as well
 ---Scrape and print all dialogue when dialogue is started
@@ -70,8 +70,11 @@ end
 ---@param dialog any
 ---@param instanceID any
 Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instanceID)
-    if EnableScraping == true then
+
+    if EnableCharacterSpecDebug == true then
         _P("Dialog is: " .. dialog)
+    end
+    if EnableScraping == true then
         ScrapeDialogue()
     end
     

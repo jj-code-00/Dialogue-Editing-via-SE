@@ -1,4 +1,4 @@
-EnableCharacterSpecDebug = MCM.Get("dialogue_Editing_Debug")
+EnableCharacterSpecDebug = MCM.Get("dialogue_Editing_Dialog_info")
 
 --Copies of handle and text before changes
 local originals = {}

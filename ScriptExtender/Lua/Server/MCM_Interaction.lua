@@ -4,8 +4,11 @@ Ext.ModEvents.BG3MCM["MCM_Setting_Saved"]:Subscribe(function(payload)
         return
     end
 
-    if payload.settingId == "dialogue_Editing_Debug" then
-        EnableScraping = payload.value
+    if payload.settingId == "dialogue_Editing_Dialog_info" then
         EnableCharacterSpecDebug = payload.value
+    end
+
+    if payload.settingId == "dialogue_Editing_Scraper" then
+        EnableScraping = payload.value
     end
 end)

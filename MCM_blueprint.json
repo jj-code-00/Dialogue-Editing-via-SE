@@ -10,14 +10,29 @@
                     "SectionName": "Dialogue Editing Debug Mode",
                     "Settings": [
                         {
-                            "Id": "dialogue_Editing_Debug",
-                            "Name": "Debug Mode",
+                            "Id": "dialogue_Editing_Dialog_info",
+                            "Name": "Dialog Info",
                             "Type": "checkbox",
                             "Default": false,
-                            "Description": "Enable Dumping dialogue Information to console.",
+                            "Description": "Enable Dumping some dialogue Information to console.",
                             "Handles": {
                                 "DescriptionHandle": "h64269889c61244f68d9050a6a4807ad831a6",
                                 "NameHandle": "h1aa981d9795b4293a10c99688f923d2fa1gc"
+                            },
+                            "Options": {
+                                "Min": 1,
+                                "Max": 100
+                            }
+                        },
+                        {
+                            "Id": "dialogue_Editing_Scraper",
+                            "Name": "Enable Scraper",
+                            "Type": "checkbox",
+                            "Default": false,
+                            "Description": "Attempt to get Handle's and text from dialogue Manager (WIP: DOES NOT ALWAYS WORK).",
+                            "Handles": {
+                                "DescriptionHandle": "h3b63ac44f8004ad99f00d32cf65d527b4a64",
+                                "NameHandle": "h37400e162ca844ffb1afe8b483a143a197gc"
                             },
                             "Options": {
                                 "Min": 1,
