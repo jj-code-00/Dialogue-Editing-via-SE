@@ -88,14 +88,12 @@ local blueprint = {
 This should also be called at session load. 
 
 # Tools
-The mod includes a WIP dialogue scraper and other information that will be dumped to the console if enabled in the MCM. 
+The mod includes a dialogue scraper and other information that will be dumped to the console if enabled in the MCM. 
 
-These are useful for getting Handles, actor information, Text data, and eventually things like skills rolls, etc. I would recommend utilizing the below datamined dialogue files, or using the parser linked to make them yourself.
-
-Info about the scraper's current state: Some dialogue's go varying levels deep in the dialogue manager's tree before getting to the handles. I need to account for that and will update it as I work on it. 
+These are useful for getting Handles, actor information, Text data, and eventually things like skills rolls, etc.
 
 # Resources
-[Datamined dialogue](https://www.tumblr.com/roksik-dnd/727481314781102080/bg3-datamined-dialogue-google-drive): This includes most all handles and text you would need. 
+[Datamined dialogue](https://www.tumblr.com/roksik-dnd/727481314781102080/bg3-datamined-dialogue-google-drive): Some more dialogue info. 
 
 Moxifier's [Github](https://github.com/Moxifer/bg3-dialog-timeline-edits/tree/main): They have done more extensive dialogue editing and their repo can be a good example for more advanced usages beyond this mod. 
 
