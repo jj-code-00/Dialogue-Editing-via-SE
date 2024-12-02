@@ -29,7 +29,7 @@
                             "Name": "Enable Scraper",
                             "Type": "checkbox",
                             "Default": false,
-                            "Description": "Attempt to get Handle's and text from dialogue Manager (WIP: DOES NOT ALWAYS WORK).",
+                            "Description": "Attempt to get Handles and text from dialogue Manager.",
                             "Handles": {
                                 "DescriptionHandle": "h3b63ac44f8004ad99f00d32cf65d527b4a64",
                                 "NameHandle": "h37400e162ca844ffb1afe8b483a143a197gc"

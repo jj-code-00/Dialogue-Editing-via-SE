@@ -60,5 +60,7 @@ Ext.Osiris.RegisterListener("DialogStarted", 2, "after", function(dialog, instan
     if EnableScraping == true then
         ScrapeDialogue()
     end
+
+    -- NotifyClientDialogueStart()
     
 end)
